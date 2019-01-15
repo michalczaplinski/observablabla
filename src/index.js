@@ -21,7 +21,7 @@ const store = observable({
 const Number = observe(
   class Number extends Component {
     render() {
-      return <div> count : {store.number} </div>;
+      return <div> Count: {store.number} </div>;
     }
   }
 );
@@ -70,5 +70,7 @@ class App extends Component {
     );
   }
 }
+
+window.store = store;
 
 ReactDOM.render(<App />, document.getElementById("root"));

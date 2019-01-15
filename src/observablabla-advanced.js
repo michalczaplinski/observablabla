@@ -1,24 +1,29 @@
-const reactionsMap = {};
+const reactionsMap = new WeakMap();
 let currentlyRenderingComponent;
 
 export function observable(object) {
   const handler = {
-    get: function(target, key) {
-      if (!reactionsMap[key]) {
-        reactionsMap[key] = currentlyRenderingComponent;
-      }
-      const result = Reflect.get(target, key);
+    get: function(target, key, receiver) {
+      const componentMap = reactionsMap.get(target);
+      reactionsMap.set(target, {
+        [key]: currentlyRenderingComponent,
+        ...componentMap
+      });
+      const result = Reflect.get(target, key, receiver);
       return result;
     },
 
     set: function(target, key, value) {
-      const component = reactionsMap[key];
-      if (!component) {
-        reactionsMap[key] = currentlyRenderingComponent;
+      const componentMap = reactionsMap.get(target);
+      if (!componentMap[key]) {
+        reactionsMap.set(target, {
+          [key]: currentlyRenderingComponent,
+          ...componentMap
+        });
         currentlyRenderingComponent.forceUpdate();
         return Reflect.set(target, key, value);
       }
-      component.forceUpdate();
+      componentMap[key].forceUpdate();
       return Reflect.set(target, key, value);
     }
   };
@@ -34,5 +39,3 @@ export function observe(MyComponent) {
     }
   };
 }
-
-window.reactionsMap = reactionsMap;
