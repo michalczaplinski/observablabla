@@ -1,106 +1,113 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import uuid from 'uuid';
-
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { observable, observe } from './observablabla';
 
+import './index.css'
+
 const store = observable({
-  newTodo: '',
-  todos: {},
-  filter: 'all',
-  addTodo: () => {
-    store.todos = {
-      ...store.todos,
-      [uuid.v4()]: { content: store.newTodo, done: false }
+  number: 0,
+  incNumber: () => store.number++,
+
+  text: 'hello',
+  updateText: (text) => store.text = text,
+
+  list: [],
+  updateList: (val) => {
+    if (!val) return;
+    store.list = store.list.concat(val)
+  },
+
+  obj: { a: 1, b: 1 },
+  updateObj: (key, value) => {
+    store.obj = {
+      ...store.obj,
+      [key]: value
     };
-    store.updateNewTodo('');
   },
-  updateNewTodo: content => { store.newTodo = content },
-  deleteTodo: id => {
-    const newTodos = store.todos;
-    delete newTodos[id];
-    store.todos = newTodos;
-  },
-  toggleDone: id => {
-    store.todos = {
-      ...store.todos,
-      [id]: { ...store.todos[id], done: !store.todos[id].done }
-    }
-  },
-  setActiveFilter: filter => { store.filter = filter; },
-  clearCompleted: () => {
-    const newTodos = store.todos;
-    for (let [id, todo] of Object.entries(newTodos)) {
-      if (todo.done) {
-        delete newTodos[id]
-      }
-    }
-    store.todos = newTodos;
+});
+
+const Number = observe(class Number extends Component {
+  render() {
+    return (<div> {store.number} </div>)
   }
 })
 
+// const Number2 = observe(class Number extends Component {
+//   render() {
+//     return (<div> {store2.num} </div>)
+//   }
+// })
 
-const Todo = observe(class Todo extends React.Component {
+const List = observe(class List extends Component {
+  state = { value: '' }
+
   render() {
-    const { id, todo } = this.props;
-    return (
-      <li key={id}>
-        <button onClick={() => store.toggleDone(id)}> {todo.done ? "⌧" : "✔"} </button>
-        <span>
-          {todo.done ? <s>{todo.content}</s> : todo.content}
-        </span>
-        <button onClick={() => store.deleteTodo(id)}> ❌ </button>
-      </li>
-    )
+    const { value } = this.state;
+    return (<div>
+      <input value={value} onChange={e => this.setState({ value: e.target.value })} />
+      <button onClick={() => {
+        store.updateList(value);
+        this.setState({ value: '' })
+      }}>
+        push
+      </button>
+      <ul>
+        {store.list.map((item, index) =>
+          <li key={index}> {item} </li>
+        )}
+      </ul>
+    </div>)
   }
 })
 
-const TodoApp = observe(class TodoApp extends React.Component {
+const Text = observe(class Text extends Component {
   render() {
-    const todos = Object.entries(store.todos).filter(([id, item]) => {
-      if (store.filter === 'all') {
-        return true;
-      }
-      if (store.filter === 'active') {
-        if (item.done) {
-          return false;
-        } else {
-          return true
-        }
-      }
-      if (store.filter === 'completed') {
-        if (item.done) {
-          return true
-        } else {
-          return false;
-        }
-      }
-    });
-
     return (
-      <span>
-        <input value={store.newTodo} onChange={e => store.updateNewTodo(e.target.value)} />
-        <button onClick={store.addTodo}> add </button>
-        <ul>
-          {todos.map(([id, value]) => (
-            <Todo key={id} id={id} todo={value} />
-          ))}
-        </ul>
-        <div>
-          SHOW:
-          <div>
-            <button onClick={() => store.setActiveFilter('all')} > ALL </button>
-            <button onClick={() => store.setActiveFilter('active')} > ACTIVE </button>
-            <button onClick={() => store.setActiveFilter('completed')} > COMPLETED </button>
+      <input value={store.text}
+        onChange={e => store.updateText(e.target.value)}
+      />
+    );
+  }
+});
+
+const NestedObject = observe(class NestedObject extends Component {
+  render() {
+    return (
+      <div>
+        {Object.entries(store.obj).map(([key, val], index) => (
+          <div key={index}>
+            <span> {key}: </span>
+            <span> {val} </span>
+            <button onClick={() => {
+              store.updateObj(key, parseInt(val) + 1);
+            }}>
+              +
+            </button>
           </div>
-        </div>
-        <br />
-        <button onClick={store.clearCompleted} > CLEAR COMPLETED </button>
-      </span>
+        ))}
+      </div>
     )
   }
-})
+});
+
+class App extends Component {
+  render() {
+    return <div>
+      <Text />
+      <div>
+        <button onClick={store.incNumber} > store 1 + </button>
+        <Number />
+        {/* <Number2 /> */}
+      </div>
+      <List />
+      <NestedObject />
+    </div>;
+  }
+}
 
 window.store = store;
 
-ReactDOM.render(<TodoApp />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
+
+
+
