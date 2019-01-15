@@ -39,5 +39,3 @@ export function observe(MyComponent) {
     }
   };
 }
-
-window.reactionsMap = reactionsMap;
