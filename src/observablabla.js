@@ -1,11 +1,10 @@
-//
-//
-//    REACTIONS_MAP
-//
-//
-//
+const reactionsMap = {};
+//    Mapping from the key name to the component that needs to be rerendered
+//    {
+//      [store_key1]: ComponentToBeRerendered
+//      [store_key2]: ComponentToBeRerendered
+//    }
 
-// const reactionsMap = {};
 // let currentlyRenderingComponent;
 
 const handler = {

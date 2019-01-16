@@ -4,20 +4,25 @@ let currentlyRenderingComponent;
 const handler = {
   get: function(target, key) {
     if (!reactionsMap[key]) {
-      reactionsMap[key] = currentlyRenderingComponent;
+      reactionsMap[key] = [currentlyRenderingComponent];
+    }
+    const hasComponent = reactionsMap[key].find(
+      comp => comp.ID === currentlyRenderingComponent.ID
+    );
+    if (!hasComponent) {
+      reactionsMap[key].push(currentlyRenderingComponent);
     }
     const result = Reflect.get(target, key);
     return result;
   },
 
   set: function(target, key, value) {
-    const component = reactionsMap[key];
-    if (!component) {
-      reactionsMap[key] = currentlyRenderingComponent;
-      currentlyRenderingComponent.forceUpdate();
-      return Reflect.set(target, key, value);
+    if (!reactionsMap[key]) {
+      reactionsMap[key] = [currentlyRenderingComponent];
+      // currentlyRenderingComponent.forceUpdate();
+      // return Reflect.set(target, key, value);
     }
-    component.forceUpdate();
+    reactionsMap[key].forEach(component => component.forceUpdate());
     return Reflect.set(target, key, value);
   }
 };
@@ -28,7 +33,9 @@ export function store(object) {
 
 export function view(MyComponent) {
   return class Observer extends MyComponent {
+    ID = `${Math.floor(Math.random() * 10e9)}`;
     static displayName = `${MyComponent.name}__Observer`;
+
     render() {
       currentlyRenderingComponent = this;
       return super.render();

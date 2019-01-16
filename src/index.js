@@ -36,6 +36,7 @@ const Text = view(
             onChange={e => state.updateText(e.target.value)}
           />
           <div> {state.text} </div>
+          <div> {state.number} </div>
         </div>
       );
     }
@@ -53,23 +54,25 @@ const Seconds = view(
   }
 );
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Seconds />
-        <hr />
-        <Text />
-        <hr />
+const App = view(
+  class App extends Component {
+    render() {
+      return (
         <div>
-          <Number />
-          <button onClick={state.increment}> +1 </button>
-          <button onClick={state.decrement}> -1 </button>
+          <Seconds />
+          <hr />
+          <Text />
+          <hr />
+          <div>
+            <Number />
+            <button onClick={state.increment}> +1 </button>
+            <button onClick={state.decrement}> -1 </button>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
-}
+);
 
 window.state = state;
 
