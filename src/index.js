@@ -1,54 +1,54 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { observable, observe } from "./observablabla";
+import { store, view } from "./observablabla-simplified";
 
 import "./index.css";
 
-const store = observable({
+const state = store({
   seconds: 0,
-  updateSeconds: () => store.seconds++,
+  updateSeconds: () => state.seconds++,
 
   number: 0,
-  increment: () => store.number++,
-  decrement: () => store.number--,
+  increment: () => state.number++,
+  decrement: () => state.number--,
 
   text: "",
   updateText: text => {
-    store.text = text;
+    state.text = text;
   }
 });
 
-const Number = observe(
+const Number = view(
   class Number extends Component {
     render() {
-      return <div> Count: {store.number} </div>;
+      return <div> Count: {state.number} </div>;
     }
   }
 );
 
-const Text = observe(
+const Text = view(
   class Text extends Component {
     render() {
       return (
         <div>
           <input
-            value={store.text}
-            onChange={e => store.updateText(e.target.value)}
+            value={state.text}
+            onChange={e => state.updateText(e.target.value)}
           />
-          <div> {store.text} </div>
+          <div> {state.text} </div>
         </div>
       );
     }
   }
 );
 
-const Seconds = observe(
+const Seconds = view(
   class Seconds extends Component {
     componentDidMount() {
-      setInterval(store.updateSeconds, 1000);
+      setInterval(state.updateSeconds, 1000);
     }
     render() {
-      return <div> Seconds: {store.seconds} </div>;
+      return <div> Seconds: {state.seconds} </div>;
     }
   }
 );
@@ -63,14 +63,14 @@ class App extends Component {
         <hr />
         <div>
           <Number />
-          <button onClick={store.increment}> +1 </button>
-          <button onClick={store.decrement}> -1 </button>
+          <button onClick={state.increment}> +1 </button>
+          <button onClick={state.decrement}> -1 </button>
         </div>
       </div>
     );
   }
 }
 
-window.store = store;
+window.state = state;
 
 ReactDOM.render(<App />, document.getElementById("root"));

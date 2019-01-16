@@ -1,38 +1,19 @@
-const reactionsMap = {};
-let currentlyRenderingComponent;
+//
+//
+//    REACTIONS_MAP
+//
+//
+//
 
-export function observable(object) {
-  const handler = {
-    get: function(target, key) {
-      if (!reactionsMap[key]) {
-        reactionsMap[key] = currentlyRenderingComponent;
-      }
-      const result = Reflect.get(target, key);
-      return result;
-    },
+// const reactionsMap = {};
+// let currentlyRenderingComponent;
 
-    set: function(target, key, value) {
-      const component = reactionsMap[key];
-      if (!component) {
-        reactionsMap[key] = currentlyRenderingComponent;
-        currentlyRenderingComponent.forceUpdate();
-        return Reflect.set(target, key, value);
-      }
-      component.forceUpdate();
-      return Reflect.set(target, key, value);
-    }
-  };
-  return new Proxy(object, handler);
-}
-
-export function observe(MyComponent) {
-  return class Observer extends MyComponent {
-    static displayName = `${MyComponent.name}__Observer`;
-    render() {
-      currentlyRenderingComponent = this;
-      return super.render();
-    }
-  };
-}
-
-window.reactionsMap = reactionsMap;
+const handler = {
+  get: (target, key) => {
+    return Reflect.get(target, key);
+  },
+  set: (target, key, value) => {
+    console.log(`setting key ${key} to value ${value}`);
+    return Reflect.set(target, key, value);
+  }
+};

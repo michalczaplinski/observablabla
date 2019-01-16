@@ -1,7 +1,7 @@
 const reactionsMap = new WeakMap();
 let currentlyRenderingComponent;
 
-export function observable(object) {
+export function store(object) {
   const handler = {
     get: function(target, key, receiver) {
       const componentMap = reactionsMap.get(target);
@@ -30,7 +30,7 @@ export function observable(object) {
   return new Proxy(object, handler);
 }
 
-export function observe(MyComponent) {
+export function view(MyComponent) {
   return class Observer extends MyComponent {
     static displayName = `${MyComponent.name}__Observer`;
     render() {
