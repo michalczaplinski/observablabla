@@ -36,7 +36,6 @@ const Text = view(
             onChange={e => state.updateText(e.target.value)}
           />
           <div> {state.text} </div>
-          <div> {state.number} </div>
         </div>
       );
     }
@@ -46,7 +45,7 @@ const Text = view(
 const Seconds = view(
   class Seconds extends Component {
     componentDidMount() {
-      setInterval(state.updateSeconds, 1000);
+      setInterval(() => state.updateSeconds(), 1000);
     }
     render() {
       return <div> Seconds: {state.seconds} </div>;
@@ -63,10 +62,12 @@ const App = view(
           <hr />
           <Text />
           <hr />
+          <Number />
+          <hr />
           <div>
             <Number />
-            <button onClick={state.increment}> +1 </button>
-            <button onClick={state.decrement}> -1 </button>
+            <button onClick={() => state.increment()}> +1 </button>
+            <button onClick={() => state.decrement()}> -1 </button>
           </div>
         </div>
       );

@@ -3,6 +3,9 @@ let currentlyRenderingComponent;
 
 const handler = {
   get: function(target, key) {
+    if (typeof currentlyRenderingComponent === "undefined") {
+      return Reflect.get(target, key);
+    }
     if (!reactionsMap[key]) {
       reactionsMap[key] = [currentlyRenderingComponent];
     }
@@ -12,15 +15,12 @@ const handler = {
     if (!hasComponent) {
       reactionsMap[key].push(currentlyRenderingComponent);
     }
-    const result = Reflect.get(target, key);
-    return result;
+    return Reflect.get(target, key);
   },
 
   set: function(target, key, value) {
     if (!reactionsMap[key]) {
       reactionsMap[key] = [currentlyRenderingComponent];
-      // currentlyRenderingComponent.forceUpdate();
-      // return Reflect.set(target, key, value);
     }
     reactionsMap[key].forEach(component => component.forceUpdate());
     return Reflect.set(target, key, value);
@@ -38,7 +38,9 @@ export function view(MyComponent) {
 
     render() {
       currentlyRenderingComponent = this;
-      return super.render();
+      const renderValue = super.render();
+      currentlyRenderingComponent = undefined;
+      return renderValue;
     }
   };
 }
