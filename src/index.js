@@ -5,6 +5,7 @@ import { store, view } from "./observablabla";
 import "./index.css";
 
 const state = store({
+  // text: "hello",
   number: 0,
   increment: () => state.number++,
   decrement: () => state.number--
