@@ -49,9 +49,6 @@ export function view(MyComponent) {
 //   },
 
 //   set: function (target, key, value) {
-//     if (!reactionsMap[key]) {
-//       reactionsMap[key] = [currentlyRenderingComponent];
-//     }
 //     reactionsMap[key].forEach(component => component.forceUpdate());
 //     target[key] = value;
 //     return true;
