@@ -15,7 +15,7 @@ const handler = {
     if (!hasComponent) {
       reactionsMap[key].push(currentlyRenderingComponent);
     }
-    return target[value];
+    return target[key];
   },
 
   set: function(target, key, value) {
