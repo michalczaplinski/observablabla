@@ -3,9 +3,6 @@ const reactionsMap = {};
 
 const handler = {
   get: (target, key) => {
-    if (typeof target[key] === "function") {
-      return target[key];
-    }
     if (!reactionsMap[key]) {
       reactionsMap[key] = currentlyRenderingComponent;
     }
