@@ -5,6 +5,7 @@ import { store, view } from "./observablabla";
 import "./index.css";
 
 const state = store({
+  // text: "hello",
   number: 0,
   increment: () => state.number++,
   decrement: () => state.number--
@@ -16,6 +17,7 @@ const App = view(
       return (
         <div>
           <div> Count: {state.number} </div>
+          {/* <div> Count: {state.text} </div> */}
           <button onClick={() => state.increment()}> +1 </button>
           <button onClick={() => state.decrement()}> -1 </button>
         </div>
