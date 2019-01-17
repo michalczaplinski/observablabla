@@ -1,3 +1,11 @@
+export function store(object) {
+  return object;
+}
+
+export function view(MyComponent) {
+  return MyComponent;
+}
+
 // let currentlyRenderingComponent;
 
 // const handler = {
