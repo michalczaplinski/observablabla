@@ -1,3 +1,6 @@
+const reactionsMap = {};
+let currentlyRenderingComponent;
+
 const handler = {
   get: (target, key) => {
     return target[key];
@@ -15,9 +18,6 @@ export function store(object) {
 export function view(MyComponent) {
   return MyComponent;
 }
-
-// const reactionsMap = {};
-// let currentlyRenderingComponent;
 
 // const handler = {
 //   get: function (target, key) {
