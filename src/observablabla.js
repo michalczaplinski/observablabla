@@ -31,9 +31,7 @@ export function view(MyComponent) {
 
 // const handler = {
 //   get: function (target, key) {
-//     if (
-//       typeof currentlyRenderingComponent === "undefined"
-//     ) {
+//     if (typeof currentlyRenderingComponent === "undefined") {
 //       return target[key];
 //     }
 //     if (!reactionsMap[key]) {
