@@ -4,7 +4,7 @@ let currentlyRenderingComponent;
 const handler = {
   get: function(target, key) {
     if (typeof currentlyRenderingComponent === "undefined") {
-      return Reflect.get(target, key);
+      return target[key];
     }
     if (!reactionsMap[key]) {
       reactionsMap[key] = [currentlyRenderingComponent];
