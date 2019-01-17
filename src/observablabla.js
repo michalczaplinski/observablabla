@@ -3,10 +3,7 @@ let currentlyRenderingComponent;
 
 const handler = {
   get: function(target, key) {
-    if (
-      typeof currentlyRenderingComponent === "undefined" ||
-      typeof target[key] === "function"
-    ) {
+    if (typeof currentlyRenderingComponent === "undefined") {
       return target[key];
     }
     if (!reactionsMap[key]) {
