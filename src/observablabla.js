@@ -1,8 +1,8 @@
-// const reactionsMap = {};
 // let currentlyRenderingComponent;
 
 // const handler = {
 //   get: (target, key) => {
+//     console.log(`${key}  ->  ${currentlyRenderingComponent.name}`);
 //     return target[key];
 //   },
 //   set: (target, key, value) => {
@@ -17,16 +17,11 @@
 
 // export function view(MyComponent) {
 //   return class Observer extends MyComponent {
-//     ID = `${Math.floor(Math.random() * 10e9)}`;
 //     static displayName = `${MyComponent.name}__Observer`;
-
+//     name = `${MyComponent.name}__Observer`;
 //     render() {
 //       currentlyRenderingComponent = this;
-//       const renderValue = super.render();
-//       currentlyRenderingComponent = undefined;
-//       return renderValue;
+//       return super.render();
 //     }
 //   };
 // }
-
-// window.reactionsMap = reactionsMap;
