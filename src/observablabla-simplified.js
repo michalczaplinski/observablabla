@@ -15,7 +15,7 @@ const handler = {
     if (!hasComponent) {
       reactionsMap[key].push(currentlyRenderingComponent);
     }
-    return Reflect.get(target, key);
+    return target[value];
   },
 
   set: function(target, key, value) {
@@ -23,7 +23,8 @@ const handler = {
       reactionsMap[key] = [currentlyRenderingComponent];
     }
     reactionsMap[key].forEach(component => component.forceUpdate());
-    return Reflect.set(target, key, value);
+    target[key] = value;
+    return true;
   }
 };
 

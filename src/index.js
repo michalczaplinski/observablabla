@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { store, view } from "./observablabla-simplified";
+import { store, view } from "./observablabla";
 
 import "./index.css";
 
