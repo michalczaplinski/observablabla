@@ -50,7 +50,7 @@ export function view(MyComponent) {
 // export function view(MyComponent) {
 //   return class Observer extends MyComponent {
 //     ID = `${Math.floor(Math.random() * 10e9)}`;
-//     static displayName = `${MyComponent.name}__Observer`;
+//     name = `${MyComponent.name}__Observer`;
 
 //     render() {
 //       currentlyRenderingComponent = this;
