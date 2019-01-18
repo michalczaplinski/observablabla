@@ -21,6 +21,22 @@ export function view(MyComponent) {
 
 window.reactionsMap = reactionsMap;
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // const handler = {
 //   get: function (target, key) {
 //     if (typeof currentlyRenderingComponent === "undefined") {
